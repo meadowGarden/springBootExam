@@ -7,8 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Song {
-    private String id;
+public class SongToDisplay {
     private String title;
     private String author;
 }

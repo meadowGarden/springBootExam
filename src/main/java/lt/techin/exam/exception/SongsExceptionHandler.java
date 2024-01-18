@@ -16,6 +16,4 @@ public class SongsExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-
-
 }

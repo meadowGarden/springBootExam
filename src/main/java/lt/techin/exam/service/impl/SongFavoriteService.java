@@ -8,7 +8,6 @@ import lt.techin.exam.entity.SongEntity;
 import lt.techin.exam.exception.SongNotFoundException;
 import lt.techin.exam.service.ISongFavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +36,6 @@ public class SongFavoriteService implements ISongFavoriteService {
 
     @Override
     public Song save(Song song) {
-//        final SongEntity songEntity = songToSongEntity(song);
         final SongEntity songEntity = ObjectMapper.songToSongEntity(song);
         songEntity.setId(String.valueOf(UUID.randomUUID()));
         final SongEntity savedSongEntity = favoriteSongRepository.save(songEntity);
@@ -54,6 +52,5 @@ public class SongFavoriteService implements ISongFavoriteService {
             throw new SongNotFoundException("no favourites to delete");
         }
     }
-
 
 }

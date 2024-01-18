@@ -33,15 +33,23 @@ public class SongController {
     }
 
     @PostMapping(path = "/favourites")
-    public ResponseEntity<SongToDisplay> saveSong(@RequestBody Song song) {
-        Song songToSave = songFavoriteService.save(song);
-        return new ResponseEntity<>(ObjectMapper.songToSongToDisplay(songToSave), HttpStatus.OK);
+    public ResponseEntity<List<SongToDisplay>> saveSong(@RequestBody Song song) {
+        songFavoriteService.save(song);
+        final List<Song> songs = songFavoriteService.findAll();
+        final List<SongToDisplay> songsToDisplay = songs.stream()
+                .map(ObjectMapper::songToSongToDisplay)
+                .toList();
+        return new ResponseEntity<>(songsToDisplay, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "favourites")
-    public ResponseEntity<SongToDisplay> deleteSong(@RequestBody SongEntity songEntity) {
+    public ResponseEntity<List<SongToDisplay>> deleteSong(@RequestBody SongEntity songEntity) {
         songFavoriteService.delete(songEntity);
-        return new ResponseEntity<>(HttpStatus.OK);
+        final List<Song> songs = songFavoriteService.findAll();
+        final List<SongToDisplay> songsToDisplay = songs.stream()
+                .map(ObjectMapper::songToSongToDisplay)
+                .toList();
+        return new ResponseEntity<>(songsToDisplay, HttpStatus.OK);
     }
 
 }

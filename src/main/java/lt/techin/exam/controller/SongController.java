@@ -20,17 +20,22 @@ public class SongController {
         this.songFavoriteService = songFavoriteService;
     }
 
-    @GetMapping(path = "/songs")
+    @GetMapping(path = "/favourites")
     public ResponseEntity<List<Song>> findAll() {
         return new ResponseEntity<>(songFavoriteService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/songs")
-    public ResponseEntity<Song> saveProduct(@RequestBody Song song) {
+    @PostMapping(path = "/favourites")
+    public ResponseEntity<Song> saveSong(@RequestBody Song song) {
         Song songToSave = songFavoriteService.save(song);
-        return new ResponseEntity<>(songToSave, HttpStatus.CREATED);
+        return new ResponseEntity<>(songToSave, HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "favourites")
+    public ResponseEntity<Song> deleteSong(@RequestBody Song song) {
+        songFavoriteService.delete(song);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 

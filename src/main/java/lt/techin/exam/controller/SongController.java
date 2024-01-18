@@ -1,7 +1,8 @@
 package lt.techin.exam.controller;
 
-import lt.techin.exam.entity.EntityConverter;
+import lt.techin.exam.entity.ObjectMapper;
 import lt.techin.exam.entity.Song;
+import lt.techin.exam.entity.SongEntity;
 import lt.techin.exam.entity.SongToDisplay;
 import lt.techin.exam.service.impl.SongFavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping (path = "/api")
@@ -27,20 +27,20 @@ public class SongController {
     public ResponseEntity<List<SongToDisplay>> findAll() {
         final List<Song> songs = songFavoriteService.findAll();
         final List<SongToDisplay> songsToDisplay = songs.stream()
-                .map(EntityConverter::songToSongToDisplay)
+                .map(ObjectMapper::songToSongToDisplay)
                 .toList();
         return new ResponseEntity<>(songsToDisplay, HttpStatus.OK);
     }
 
     @PostMapping(path = "/favourites")
-    public ResponseEntity<Song> saveSong(@RequestBody Song song) {
+    public ResponseEntity<SongToDisplay> saveSong(@RequestBody Song song) {
         Song songToSave = songFavoriteService.save(song);
-        return new ResponseEntity<>(songToSave, HttpStatus.OK);
+        return new ResponseEntity<>(ObjectMapper.songToSongToDisplay(songToSave), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "favourites")
-    public ResponseEntity<Song> deleteSong(@RequestBody Song song) {
-        songFavoriteService.delete(song);
+    public ResponseEntity<SongToDisplay> deleteSong(@RequestBody SongEntity songEntity) {
+        songFavoriteService.delete(songEntity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

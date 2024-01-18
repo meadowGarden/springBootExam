@@ -1,6 +1,6 @@
 package lt.techin.exam.entity;
 
-public class EntityConverter {
+public class ObjectMapper {
     public static SongEntity songToSongEntity(Song song) {
         return SongEntity.builder()
                 .id(song.getId())
@@ -23,4 +23,6 @@ public class EntityConverter {
                 .title(song.getTitle())
                 .build();
     }
+
+
 }

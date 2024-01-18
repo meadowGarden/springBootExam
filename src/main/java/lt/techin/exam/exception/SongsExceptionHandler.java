@@ -11,7 +11,7 @@ public class SongsExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleNotFoundException(SongNotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setMessage(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }

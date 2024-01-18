@@ -5,12 +5,14 @@ import lt.techin.exam.dao.FavoriteSongRepository;
 import lt.techin.exam.entity.ObjectMapper;
 import lt.techin.exam.entity.Song;
 import lt.techin.exam.entity.SongEntity;
+import lt.techin.exam.exception.SongNotFoundException;
 import lt.techin.exam.service.ISongFavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,10 +46,12 @@ public class SongFavoriteService implements ISongFavoriteService {
 
     @Override
     public void delete(SongEntity songEntity) {
-        try {
+        Optional<SongEntity> songToDelete = favoriteSongRepository.findById(songEntity.getId());
+
+        if (songToDelete.isPresent()) {
             favoriteSongRepository.delete(songEntity);
-        } catch (final EmptyResultDataAccessException e) {
-            log.debug("trying to delete non-existing song", e);
+        } else {
+            throw new SongNotFoundException("no favourites to delete");
         }
     }
 
